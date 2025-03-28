@@ -155,9 +155,4 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON streamingdb.* TO 'user3'@'localhost';
 
 FLUSH PRIVILEGES;
 
--- QUERYS --
-SELECT a.pk_album_id, a.album_name 
-FROM tbl_album_favorite af
-JOIN tbl_album a ON af.fk_album_id = a.pk_album_id
-WHERE af.fk_username = 'user1';
 
