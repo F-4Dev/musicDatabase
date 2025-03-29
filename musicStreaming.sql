@@ -3,22 +3,23 @@ CREATE DATABASE IF NOT EXISTS streamingdb;
 USE streamingdb;
 
 CREATE TABLE tbl_library (
-    pk_id_library VARCHAR(255) NOT NULL,
+    pk_id_library INT NOT NULL AUTO_INCREMENT,
+    library_name VARCHAR(255) NOT NULL DEFAULT "unbekannt",
     PRIMARY KEY (pk_id_library),
     pathToLibrary VARCHAR(255)
 ) ENGINE = InnoDB;
 
 CREATE TABLE tbl_album (
-    pk_album_id INT NOT NULL AUTO_INCREMENT,
+    pk_album_id INT NOT NULL,
     album_name VARCHAR(255) NOT NULL DEFAULT "unbekannt",
-    fk_id_library VARCHAR(255) NOT NULL,
+    fk_id_library INT NOT NULL,
     PRIMARY KEY (pk_album_id),
     FOREIGN KEY (fk_id_library) REFERENCES tbl_library (pk_id_library) ON DELETE CASCADE
 ) ENGINE = InnoDB;
 
 CREATE TABLE tbl_song (
     pk_song_id INT NOT NULL AUTO_INCREMENT,
-    song_name VARCHAR(255),
+    song_name VARCHAR(255) NOT NULL DEFAULT "unbekannt",
     pathToSong VARCHAR(255),
     dateAdded DATE,
     fk_album_id INT NOT NULL,
@@ -28,7 +29,7 @@ CREATE TABLE tbl_song (
 
 CREATE TABLE tbl_artist (
     pk_artist_id INT NOT NULL AUTO_INCREMENT,
-    artist_name VARCHAR(255) NOT NULL,
+    artist_name VARCHAR(255) NOT NULL NOT NULL DEFAULT "unbekannter Kunstler",
     PRIMARY KEY (pk_artist_id)
 ) ENGINE = InnoDB;
 

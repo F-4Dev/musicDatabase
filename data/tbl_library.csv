@@ -1,2 +1,2 @@
-pk_id_library,pathToLibrary
-lib1,music
+pk_id_library,library_name,pathToLibrary
+1,Musik,music

@@ -1,26 +1,53 @@
 <?php
-// index.php - Homepage listing libraries
-include 'db.php';
-$query = $pdo->query("SELECT * FROM tbl_library");
-$libraries = $query->fetchAll(PDO::FETCH_ASSOC);
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = 'streamingdb';
+
+// Create connection
+$connection = new mysqli($servername, $username, $password, $dbname);
+
+// Check connection
+if ($connection->connect_error) {
+    die("Connection failed: " . $connection->connect_error);
+} else {
+    include 'navbar.php';
+}
 ?>
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <title>Music Libraries</title>
     <link rel="stylesheet" href="css/styles.css">
 </head>
+
 <body>
-    <h1>Music Libraries</h1>
-    <ul>
-        <?php foreach ($libraries as $library): ?>
-            <li>
-                <a href="library.php?id=<?= urlencode($library['pk_id_library']) ?>">
-                    Library <?= htmlspecialchars($library['pk_id_library']) ?>
-                </a>
-            </li>
-        <?php endforeach; ?>
-    </ul>
+    <h1>Your Libraries</h1>
+    <?php
+    // Eine Abfrage um alle Biblioteken anzuzeigen
+    $libraries_query = "SELECT library_name FROM tbl_library";
+    $result = $connection->query($libraries_query);
+
+    if ($result->num_rows > 0) {
+        echo "<ul>";
+        while ($library = $result->fetch_assoc()) {        
+            echo "<li>";
+            echo "<a href='album-page.php'>" . $library['library_name'] . "</a>";            
+            echo "</li>";
+        }
+    } else {
+        $libraries = []; // No results found
+    }
+    echo "</ul>";
+
+    mysqli_close($connection);
+    ?>
 </body>
+
 </html>
+
+<?php
+$connection->close(); // Close the database connection
+?>
