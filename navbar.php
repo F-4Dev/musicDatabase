@@ -16,10 +16,10 @@ date_default_timezone_set('Europe/Berlin');
 <body>
     <nav class="navigation-bar">
         <h1 class="nav-children">
-            MusicStreaming
+            Musikdatenbank
         </h1>
-        <h1 class="nav-children">Connected successfully as <?php echo $username; ?></h>
-        <h1 class="nav-children"><?php echo date("H:i") ?></h1>
+        <h1 class="nav-children" id="welcome">Wilkommen <?php echo $username; ?></h>
+            <h1 class="nav-children"><?php echo date("H:i") ?></h1>
     </nav>
 </body>
 

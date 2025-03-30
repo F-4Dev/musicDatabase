@@ -188,12 +188,13 @@ CREATE TABLE tbl_log_song_duplicates (
 -- und den selben Artist haben, und fuegt die Daten in die eine log Tabelle ein.
 
 DELIMITER //
-
+-- erstelle einen Trigger, der vor dem einfuegen in die Tabelle tbl_song ausgefuehrt wird
 CREATE TRIGGER trg_log_insertion_to_album
 BEFORE INSERT 
 ON tbl_song
 FOR EACH ROW 
 BEGIN
+    -- ueberpruefe, ob ein Song mit dem gleichen namen und album-id bereits vorhanden ist
     IF (
         SELECT COUNT(*)
         FROM tbl_song
@@ -201,24 +202,47 @@ BEGIN
         AND fk_album_id = NEW.fk_album_id
     ) > 0
     THEN
+        -- wenn ein Duplikat gefunden wird, logge die Informationen in tbl_log_song_duplicates
         INSERT INTO tbl_log_song_duplicates (song_name, album_name, artist_name, verantwortlicher_benutzer, timestamp_insert)
         VALUES (
-            NEW.song_name,
-            (SELECT album_name FROM tbl_album WHERE pk_album_id = NEW.fk_album_id),
+            NEW.song_name,  -- Name des neuen Songs
+            (SELECT album_name FROM tbl_album WHERE pk_album_id = NEW.fk_album_id),  -- Albumname basierend auf der Album-ID
             (SELECT artist_name FROM tbl_artist 
              INNER JOIN tbl_artist_album ON tbl_artist.pk_artist_id = tbl_artist_album.fk_artist_id
              WHERE tbl_artist_album.fk_album_id = NEW.fk_album_id
-             LIMIT 1),
-            CURRENT_USER(),
-            NOW()
+             LIMIT 1),  -- kuenstlername des ersten Kuenstlers, der mit dem Album verknuepft ist
+            CURRENT_USER(),  -- der Benutzer, der die Einfuegung vornimmt
+            NOW()  -- aktueller zeitpunkt mit datum und uhrzeit
         );
-        -- werfe ein Fehler damit der song nicht übernommen wird
-        SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'Error: Song mit gleichem Namen exestiert beriets im Album';
     END IF;
 END //
 DELIMITER ;
 
+DELIMITER //
+
+CREATE TRIGGER trg_remove_duplicates
+AFTER INSERT 
+ON tbl_song
+FOR EACH ROW 
+BEGIN
+    -- Check if a song with the same name and album ID already exists
+    IF (
+        SELECT COUNT(*)
+        FROM tbl_song
+        WHERE song_name = NEW.song_name
+        AND fk_album_id = NEW.fk_album_id
+    ) > 0 THEN
+        -- Delete the existing song with the same name and album ID
+        DELETE FROM tbl_song 
+        WHERE song_name = NEW.song_name
+        AND fk_album_id = NEW.fk_album_id;
+    END IF;
+END //
+
+DELIMITER ;
+
+
+-- teste einfuegen von song mit gleichem namen
 INSERT INTO tbl_song(song_name,pathToSong,dateAdded,fk_album_id)
-VALUES ('Song ZWEI','/music/song1.mp3','2023-01-05',1);
+VALUES ('Song zehn','/music/song1.mp3','2023-01-05',1);
 
