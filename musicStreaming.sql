@@ -188,37 +188,36 @@ CREATE TABLE tbl_log_song_duplicates (
 -- und den selben Artist haben, und fuegt die Daten in die eine log Tabelle ein.
 
 DELIMITER //
+
 CREATE TRIGGER trg_log_insertion_to_album
 BEFORE INSERT 
 ON tbl_song
-    FOR EACH ROW BEGIN
-        IF (
-            SELECT
-                COUNT(tbl_song.song_name)
-            FROM tbl_song
-                WHERE tbl_song.song_name = NEW.song_name
-        ) > 0
-        THEN
-            INSERT INTO tbl_log_song_duplicates
-            VALUES (
-                NEW.song_name,
-                (SELECT tbl_album.album_name
-                 FROM tbl_song
-                 INNER JOIN tbl_album
-                 ON tbl_album.pk_album_id = tbl_song.fk_album_id
-                 WHERE tbl_song.pk_song_id = NEW.pk_song_id
-                 LIMIT 1),
-                (SELECT tbl_artist.artist_name
-                 FROM tbl_song
-                 INNER JOIN tbl_album
-                 ON tbl_album.pk_album_id = tbl_song.fk_album_id
-                 INNER JOIN tbl_artist
-                 ON tbl_artist.pk_artist_id = tbl_album.fk_artist_id
-                 WHERE tbl_song.pk_song_id = NEW.pk_song_id
-                 LIMIT 1),
-                CURRENT_USER(),
-                NOW()
-            );
-        END IF;
+FOR EACH ROW 
+BEGIN
+    IF (
+        SELECT COUNT(*)
+        FROM tbl_song
+        WHERE song_name = NEW.song_name
+        AND fk_album_id = NEW.fk_album_id
+    ) > 0
+    THEN
+        INSERT INTO tbl_log_song_duplicates (song_name, album_name, artist_name, user_to_blame, timestamp_insert)
+        VALUES (
+            NEW.song_name,
+            (SELECT album_name FROM tbl_album WHERE pk_album_id = NEW.fk_album_id),
+            (SELECT artist_name FROM tbl_artist 
+             INNER JOIN tbl_artist_album ON tbl_artist.pk_artist_id = tbl_artist_album.fk_artist_id
+             WHERE tbl_artist_album.fk_album_id = NEW.fk_album_id
+             LIMIT 1),
+            CURRENT_USER(),
+            NOW()
+        );
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Error: Song mit gleichem Namen exestiert beriets im Album';
+    END IF;
 END //
 DELIMITER ;
+
+INSERT INTO tbl_song(song_name,pathToSong,dateAdded,fk_album_id)
+VALUES ('Song ZWEI','/music/song1.mp3','2023-01-05',1);
+
