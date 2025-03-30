@@ -146,9 +146,9 @@ LINES TERMINATED BY '\n'
 IGNORE 1 LINES;
 
 -- USER MANAGEMENT --
-CREATE USER IF NOT EXISTS 'user1'@'localhost' IDENTIFIED BY 'password';
-CREATE USER IF NOT EXISTS 'user2'@'localhost' IDENTIFIED BY 'password';
-CREATE USER IF NOT EXISTS 'user3'@'localhost' IDENTIFIED BY 'password';
+CREATE USER IF NOT EXISTS 'user1'@'localhost' IDENTIFIED BY 'psw1';
+CREATE USER IF NOT EXISTS 'user2'@'localhost' IDENTIFIED BY 'psw2';
+CREATE USER IF NOT EXISTS 'user3'@'localhost' IDENTIFIED BY 'psw2';
 
 GRANT SELECT, INSERT, UPDATE, DELETE ON streamingdb.* TO 'user1'@'localhost';
 GRANT SELECT, INSERT, UPDATE, DELETE ON streamingdb.* TO 'user2'@'localhost';
@@ -156,4 +156,66 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON streamingdb.* TO 'user3'@'localhost';
 
 FLUSH PRIVILEGES;
 
+
+-- ABGFRAGEN --
+
+-- TRIGGER --
+CREATE TABLE tbl_log_song_duplicates (
+    pk_log_id INT NOT NULL AUTO_INCREMENT,
+    PRIMARY KEY(pk_log_id),
+    song_name VARCHAR(255),
+    album_name VARCHAR(255),
+    artist_name VARCHAR(255),
+    user_to_blame VARCHAR(255),
+    timestamp_insert TIMESTAMP
+) ENGINE = InnoDB;
+
+-- Dieser Trigger verhindert das einfuegen von Songs in ein Album, weleche den selben Namen
+-- und den selben Artist haben, und fuegt die Daten in die eine log Tabelle ein.
+
+
+DELIMITER //
+CREATE TRIGGER trg_log_deletion_from_album BEFORE INSERT 
+    ON tbl_song FOR EACH ROW BEGIN
+        -- erstelle Lokale Variablen
+        DECLARE log_album_name VARCHAR(255);
+        DECLARE log_song_name VARCHAR(255);
+        DECLARE log_artist_name VARCHAR(255);
+        DECLARE log_user_to_blame VARCHAR(255);
+        DECLARE log_timestamp_insert TIMESTAMP;
+
+            -- speichere outputs aus abfragen in die Lokalen Variablen
+            SELECT album_name FROM tbl_album
+                INTO log_album_name;
+            -- 
+            SELECT song_name FROM tbl_album
+            INNER JOIN 
+                tbl_song ON pk_album_id = fk_album_id
+            INTO log_song_name;
+            -- 
+            SELECT artist_name FROM tbl_album
+            INNER JOIN 
+                tbl_artist_album ON pk_album_id = fk_album_id
+            INNER JOIN 
+                tbl_artist ON fk_artist_id = pk_artist_id
+            INTO log_artist_name;
+            -- 
+            SELECT CURRENT_USER()
+                INTO log_user_to_blame;
+            -- 
+            SELECT NOW()
+                INTO log_timestamp_insert;
+
+            -- Werte der Lokalen Variablen werden in die tbl_log_song_duplicates Tabelle gespeichert
+            INSERT INTO tbl_log_song_duplicates
+                VALUES (
+                    log_album_name,
+                    log_song_name,
+                    log_song_name, 
+                    log_artist_name, 
+                    log_user_to_blame,
+                    log_timestamp_insert
+                    );
+END //
+DELIMITER ;
 

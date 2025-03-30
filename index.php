@@ -1,19 +1,19 @@
 <?php
+session_start();
 $servername = "localhost";
 $username = "root";
 $password = "";
 $dbname = 'streamingdb';
 
-// Create connection
 $connection = new mysqli($servername, $username, $password, $dbname);
 
-// Check connection
 if ($connection->connect_error) {
     die("Connection failed: " . $connection->connect_error);
 } else {
     include 'navbar.php';
 }
 ?>
+
 <!DOCTYPE html>
 <html>
 
@@ -25,29 +25,29 @@ if ($connection->connect_error) {
 
 <body>
     <h1>Your Libraries</h1>
+    
     <?php
-    // Eine Abfrage um alle Biblioteken anzuzeigen
+    if (isset($_SESSION['username'])) {
+        echo "<p>Selected User: <strong>" . $_SESSION['username'] . "</strong></p>";
+    } else {
+        echo "<p>No user selected</p>";
+    }
+
     $libraries_query = "SELECT library_name FROM tbl_library";
     $result = $connection->query($libraries_query);
 
     if ($result->num_rows > 0) {
         echo "<ul>";
         while ($library = $result->fetch_assoc()) {        
-            echo "<li>";
-            echo "<a href='album-page.php'>" . $library['library_name'] . "</a>";            
-            echo "</li>";
+            echo "<li><a href='album-page.php'>" . $library['library_name'] . "</a></li>";
         }
+        echo "</ul>";
     } else {
-        $libraries = []; // No results found
+        echo "<p>No libraries found</p>";
     }
-    echo "</ul>";
 
-    mysqli_close($connection);
+    $connection->close();
     ?>
 </body>
 
 </html>
-
-<?php
-$connection->close(); // Close the database connection
-?>
