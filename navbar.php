@@ -1,17 +1,7 @@
 <?php
-session_start();
-$connection = new mysqli("localhost", "root", "", "streamingdb");
-
-if ($connection->connect_error) {
-    die("Connection failed: " . $connection->connect_error);
-}
-
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['selected_user'])) {
-    $_SESSION['username'] = $_POST['selected_user'];
-}
-
 $user_query = "SELECT pk_username FROM tbl_user";
 $result = $connection->query($user_query);
+date_default_timezone_set('Europe/Berlin');
 ?>
 
 <!DOCTYPE html>
@@ -25,23 +15,11 @@ $result = $connection->query($user_query);
 
 <body>
     <nav class="navigation-bar">
-        <ol class="nav-children">
+        <h1 class="nav-children">
             MusicStreaming
-        </ol>
-        <form method="post">
-            <button type="button" class="user-select-btn">Select User</button>
-            <div class="user-select-content">
-                <?php
-                if ($result->num_rows > 0) {
-                    while ($user = $result->fetch_assoc()) {
-                        echo '<button type="submit" name="selected_user" value="' . $user["pk_username"] . '" class="user-select-children">' . $user["pk_username"] . '</button>';
-                    }
-                } else {
-                    echo "<p>No User Found</p>";
-                }
-                ?>
-            </div>
-        </form>
+        </h1>
+        <h1 class="nav-children">Connected successfully as <?php echo $username; ?></h>
+        <h1 class="nav-children"><?php echo date("H:i") ?></h1>
     </nav>
 </body>
 

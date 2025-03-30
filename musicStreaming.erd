@@ -4,9 +4,9 @@
   "settings": {
     "width": 2000,
     "height": 2000,
-    "scrollTop": -615.6887,
-    "scrollLeft": -573.3136,
-    "zoomLevel": 0.58,
+    "scrollTop": -281,
+    "scrollLeft": -633,
+    "zoomLevel": 0.97,
     "show": 447,
     "database": 1,
     "databaseName": "",
@@ -314,26 +314,36 @@
       },
       "WGcxSFBGX-dIhw7yD8qbk": {
         "id": "WGcxSFBGX-dIhw7yD8qbk",
-        "name": "trg_prevent_duplicates",
+        "name": "tbl_log_song_duplicates",
         "comment": "",
         "columnIds": [
-          "zyMZb09-CmlcBvS_ZAU2R",
-          "_hXj34Z3mXDY3thb7ZXDZ"
+          "eWyo6BJ0WzK486fb49SLd",
+          "HRisnnzwJp3d_yGJsea4j",
+          "i5MxLcx2TSUAm13GMTCg6",
+          "UqCTUfv0a8b5Hcj3150z0",
+          "LJDEWGR7iLnfLQ3W-cNnl",
+          "zel2fkAreKL6Z1S11Pc9a"
         ],
         "seqColumnIds": [
           "zyMZb09-CmlcBvS_ZAU2R",
-          "_hXj34Z3mXDY3thb7ZXDZ"
+          "_hXj34Z3mXDY3thb7ZXDZ",
+          "eWyo6BJ0WzK486fb49SLd",
+          "HRisnnzwJp3d_yGJsea4j",
+          "i5MxLcx2TSUAm13GMTCg6",
+          "UqCTUfv0a8b5Hcj3150z0",
+          "LJDEWGR7iLnfLQ3W-cNnl",
+          "zel2fkAreKL6Z1S11Pc9a"
         ],
         "ui": {
-          "x": 1400.6849,
-          "y": 521.3014,
+          "x": 1419.0892,
+          "y": 461.3014,
           "zIndex": 321,
-          "widthName": 125,
+          "widthName": 132,
           "widthComment": 60,
           "color": ""
         },
         "meta": {
-          "updateAt": 1743100264499,
+          "updateAt": 1743354494900,
           "createAt": 1742477548510
         }
       },
@@ -350,15 +360,15 @@
           "fS9mK0WWhfrlE9GPL5CKp"
         ],
         "ui": {
-          "x": 1138.8799,
-          "y": 1013.8369,
+          "x": 1293.5191,
+          "y": 1026.208,
           "zIndex": 332,
           "widthName": 60,
           "widthComment": 60,
           "color": ""
         },
         "meta": {
-          "updateAt": 1743100366174,
+          "updateAt": 1743354511351,
           "createAt": 1743081156774
         }
       },
@@ -2064,6 +2074,126 @@
           "updateAt": 1743330782300,
           "createAt": 1743330760876
         }
+      },
+      "eWyo6BJ0WzK486fb49SLd": {
+        "id": "eWyo6BJ0WzK486fb49SLd",
+        "tableId": "WGcxSFBGX-dIhw7yD8qbk",
+        "name": "pk_log_id",
+        "comment": "",
+        "dataType": "INT",
+        "default": "",
+        "options": 9,
+        "ui": {
+          "keys": 0,
+          "widthName": 60,
+          "widthComment": 60,
+          "widthDataType": 60,
+          "widthDefault": 60
+        },
+        "meta": {
+          "updateAt": 1743354458170,
+          "createAt": 1743354284690
+        }
+      },
+      "i5MxLcx2TSUAm13GMTCg6": {
+        "id": "i5MxLcx2TSUAm13GMTCg6",
+        "tableId": "WGcxSFBGX-dIhw7yD8qbk",
+        "name": "album_name",
+        "comment": "",
+        "dataType": "VARCHAR(255)",
+        "default": "",
+        "options": 0,
+        "ui": {
+          "keys": 0,
+          "widthName": 72,
+          "widthComment": 60,
+          "widthDataType": 82,
+          "widthDefault": 60
+        },
+        "meta": {
+          "updateAt": 1743354447768,
+          "createAt": 1743354285242
+        }
+      },
+      "HRisnnzwJp3d_yGJsea4j": {
+        "id": "HRisnnzwJp3d_yGJsea4j",
+        "tableId": "WGcxSFBGX-dIhw7yD8qbk",
+        "name": "song_name",
+        "comment": "",
+        "dataType": "VARCHAR(255)",
+        "default": "",
+        "options": 0,
+        "ui": {
+          "keys": 0,
+          "widthName": 64,
+          "widthComment": 60,
+          "widthDataType": 82,
+          "widthDefault": 60
+        },
+        "meta": {
+          "updateAt": 1743354444138,
+          "createAt": 1743354285743
+        }
+      },
+      "UqCTUfv0a8b5Hcj3150z0": {
+        "id": "UqCTUfv0a8b5Hcj3150z0",
+        "tableId": "WGcxSFBGX-dIhw7yD8qbk",
+        "name": "artist_name",
+        "comment": "",
+        "dataType": "VARCHAR(255)",
+        "default": "",
+        "options": 0,
+        "ui": {
+          "keys": 0,
+          "widthName": 66,
+          "widthComment": 60,
+          "widthDataType": 82,
+          "widthDefault": 60
+        },
+        "meta": {
+          "updateAt": 1743354449466,
+          "createAt": 1743354295596
+        }
+      },
+      "LJDEWGR7iLnfLQ3W-cNnl": {
+        "id": "LJDEWGR7iLnfLQ3W-cNnl",
+        "tableId": "WGcxSFBGX-dIhw7yD8qbk",
+        "name": "verantwortlicher_benutzer",
+        "comment": "",
+        "dataType": "VARCHAR(255)",
+        "default": "",
+        "options": 0,
+        "ui": {
+          "keys": 0,
+          "widthName": 144,
+          "widthComment": 60,
+          "widthDataType": 82,
+          "widthDefault": 60
+        },
+        "meta": {
+          "updateAt": 1743354455478,
+          "createAt": 1743354296041
+        }
+      },
+      "zel2fkAreKL6Z1S11Pc9a": {
+        "id": "zel2fkAreKL6Z1S11Pc9a",
+        "tableId": "WGcxSFBGX-dIhw7yD8qbk",
+        "name": "timestamp_insert",
+        "comment": "",
+        "dataType": "TIMESTAMP",
+        "default": "",
+        "options": 0,
+        "ui": {
+          "keys": 0,
+          "widthName": 96,
+          "widthComment": 60,
+          "widthDataType": 68,
+          "widthDefault": 60
+        },
+        "meta": {
+          "updateAt": 1743354471934,
+          "createAt": 1743354316262
+        }
       }
     },
     "relationshipEntities": {
@@ -2133,8 +2263,8 @@
           "columnIds": [
             "JBjNo816L1RcRtSJapvE0"
           ],
-          "x": 1350.8799,
-          "y": 1093.8369,
+          "x": 1505.5191,
+          "y": 1106.208,
           "direction": 8
         },
         "end": {
@@ -2329,8 +2459,8 @@
           "columnIds": [
             "JBjNo816L1RcRtSJapvE0"
           ],
-          "x": 1350.8799,
-          "y": 1013.8369,
+          "x": 1505.5191,
+          "y": 1026.208,
           "direction": 4
         },
         "end": {
@@ -2723,15 +2853,15 @@
         "id": "U0OP-VGWSfHY2FF6fU439",
         "value": "Die Beziehung zwischen der Tabelle tbl_album und der Tabelle tbl_song ist als Eins-zu-Viele (1:n) definiert. Dies bedeutet, dass ein Song, der in mehreren Alben erscheint, in jedem Album als eigenständiger Song betrachtet wird. Zum Beispiel kann ein Song, der auf einer Single veröffentlicht wurde, auch in einem Album enthalten sein, wird jedoch in diesem Kontext als neuer Song angesehen.",
         "ui": {
-          "x": 856.8944,
-          "y": 883.7567,
+          "x": 851.8944,
+          "y": 885.7567,
           "zIndex": 423,
           "width": 262,
           "height": 151,
           "color": ""
         },
         "meta": {
-          "updateAt": 1743332454874,
+          "updateAt": 1743354506067,
           "createAt": 1743332273700
         }
       }
@@ -3233,7 +3363,7 @@
       1742477548509,
       -1,
       {
-        "name": 1742477564027
+        "name": 1743354277437
       }
     ],
     "nRIAEKqDG9ypFsNxwBw1d": [
@@ -3737,7 +3867,7 @@
     "zyMZb09-CmlcBvS_ZAU2R": [
       "tableColumnEntities",
       1743100255840,
-      -1,
+      1743354288793,
       {
         "name": 1743100258534,
         "options(notNull)": 1743100274429,
@@ -3747,7 +3877,7 @@
     "_hXj34Z3mXDY3thb7ZXDZ": [
       "tableColumnEntities",
       1743100264498,
-      -1,
+      1743354289549,
       {
         "name": 1743100268686,
         "dataType": 1743100379203
@@ -3868,6 +3998,62 @@
       1743332284158,
       {
         "value": 1743332435723
+      }
+    ],
+    "eWyo6BJ0WzK486fb49SLd": [
+      "tableColumnEntities",
+      1743354284689,
+      -1,
+      {
+        "name": 1743354298412,
+        "dataType": 1743354400967,
+        "options(notNull)": 1743354390756,
+        "options(autoIncrement)": 1743354458169
+      }
+    ],
+    "i5MxLcx2TSUAm13GMTCg6": [
+      "tableColumnEntities",
+      1743354285242,
+      -1,
+      {
+        "name": 1743354307101,
+        "dataType": 1743354447767
+      }
+    ],
+    "HRisnnzwJp3d_yGJsea4j": [
+      "tableColumnEntities",
+      1743354285743,
+      -1,
+      {
+        "name": 1743354303513,
+        "dataType": 1743354444138
+      }
+    ],
+    "UqCTUfv0a8b5Hcj3150z0": [
+      "tableColumnEntities",
+      1743354295595,
+      -1,
+      {
+        "name": 1743354310506,
+        "dataType": 1743354449466
+      }
+    ],
+    "LJDEWGR7iLnfLQ3W-cNnl": [
+      "tableColumnEntities",
+      1743354296040,
+      -1,
+      {
+        "name": 1743354376671,
+        "dataType": 1743354455478
+      }
+    ],
+    "zel2fkAreKL6Z1S11Pc9a": [
+      "tableColumnEntities",
+      1743354316262,
+      -1,
+      {
+        "name": 1743354319484,
+        "dataType": 1743354471934
       }
     ]
   }

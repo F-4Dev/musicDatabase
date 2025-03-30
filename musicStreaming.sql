@@ -180,7 +180,7 @@ CREATE TABLE tbl_log_song_duplicates (
     song_name VARCHAR(255),
     album_name VARCHAR(255),
     artist_name VARCHAR(255),
-    user_to_blame VARCHAR(255),
+    verantwortlicher_benutzer VARCHAR(255),
     timestamp_insert TIMESTAMP
 ) ENGINE = InnoDB;
 
@@ -201,7 +201,7 @@ BEGIN
         AND fk_album_id = NEW.fk_album_id
     ) > 0
     THEN
-        INSERT INTO tbl_log_song_duplicates (song_name, album_name, artist_name, user_to_blame, timestamp_insert)
+        INSERT INTO tbl_log_song_duplicates (song_name, album_name, artist_name, verantwortlicher_benutzer, timestamp_insert)
         VALUES (
             NEW.song_name,
             (SELECT album_name FROM tbl_album WHERE pk_album_id = NEW.fk_album_id),
@@ -212,6 +212,7 @@ BEGIN
             CURRENT_USER(),
             NOW()
         );
+        -- werfe ein Fehler damit der song nicht übernommen wird
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'Error: Song mit gleichem Namen exestiert beriets im Album';
     END IF;
