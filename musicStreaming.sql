@@ -158,6 +158,20 @@ FLUSH PRIVILEGES;
 
 
 -- ABGFRAGEN --
+DROP VIEW IF EXISTS view_show_album_data;
+CREATE VIEW view_show_album_data AS
+    SELECT 
+        tbl_album.album_name AS album,
+        tbl_song.song_name AS song, 
+        tbl_artist.artist_name AS artist 
+    FROM 
+        tbl_album 
+    INNER JOIN 
+        tbl_song ON tbl_album.pk_album_id = tbl_song.fk_album_id 
+    INNER JOIN 
+        tbl_artist_album ON tbl_album.pk_album_id = tbl_artist_album.fk_album_id 
+    INNER JOIN 
+        tbl_artist ON tbl_artist_album.fk_artist_id = tbl_artist.pk_artist_id;
 
 -- TRIGGER --
 CREATE TABLE tbl_log_song_duplicates (
@@ -173,39 +187,35 @@ CREATE TABLE tbl_log_song_duplicates (
 -- Dieser Trigger verhindert das einfuegen von Songs in ein Album, weleche den selben Namen
 -- und den selben Artist haben, und fuegt die Daten in die eine log Tabelle ein.
 
-
 DELIMITER //
-CREATE TRIGGER trg_log_deletion_from_album BEFORE INSERT 
+CREATE TRIGGER trg_log_insertion_to_album BEFORE INSERT 
     ON tbl_song FOR EACH ROW BEGIN
         -- erstelle Lokale Variablen
         DECLARE log_album_name VARCHAR(255);
         DECLARE log_song_name VARCHAR(255);
         DECLARE log_artist_name VARCHAR(255);
         DECLARE log_user_to_blame VARCHAR(255);
-        DECLARE log_timestamp_insert TIMESTAMP;
+        DECLARE log_timestamp_insert TIMESTAMP; -- habe ich neu gelernt, ist wie Date nur mit Zeitpunkt
 
-            -- speichere outputs aus abfragen in die Lokalen Variablen
-            SELECT album_name FROM tbl_album
-                INTO log_album_name;
-            -- 
-            SELECT song_name FROM tbl_album
-            INNER JOIN 
-                tbl_song ON pk_album_id = fk_album_id
-            INTO log_song_name;
-            -- 
-            SELECT artist_name FROM tbl_album
-            INNER JOIN 
-                tbl_artist_album ON pk_album_id = fk_album_id
-            INNER JOIN 
-                tbl_artist ON fk_artist_id = pk_artist_id
-            INTO log_artist_name;
-            -- 
-            SELECT CURRENT_USER()
-                INTO log_user_to_blame;
-            -- 
-            SELECT NOW()
-                INTO log_timestamp_insert;
-
+        -- Wenn der neu hinugefuegte song den obigen Bedingungen enspricht, ...
+        IF EXISTS (
+            SELECT
+                song, 
+                artist 
+            FROM 
+                view_show_album_data -- erstellte view von oben
+            WHERE 
+                song_name = NEW.song_name 
+                AND artist_name = NEW.artist_name 
+                AND tbl_album.pk_album_id = NEW.fk_album_id;        
+        ) 
+        -- ... dann setzte Variablen
+        THEN
+            SET log_album_name = (SELECT album FROM view_show_album_data);
+            SET log_song_name = (SELECT song FROM view_show_album_data);
+            SET log_artist_name = (SELECT artist FROM view_show_album_data);
+            SET log_user_to_blame = (SELECT CURRENT_USER());
+            SET log_timestamp_insert = (SELECT NOW());
             -- Werte der Lokalen Variablen werden in die tbl_log_song_duplicates Tabelle gespeichert
             INSERT INTO tbl_log_song_duplicates
                 VALUES (
@@ -216,6 +226,7 @@ CREATE TRIGGER trg_log_deletion_from_album BEFORE INSERT
                     log_user_to_blame,
                     log_timestamp_insert
                     );
+        END IF;
 END //
 DELIMITER ;
 
