@@ -15,19 +15,17 @@
         if (isset($_POST['pk_id_library'])) {
             $current_library_id = $_POST['pk_id_library'];
         } else {
-            echo "<p>No libraries found</p>";
+            echo "<p>Keine alben gefunden</p>";
         }
-        echo "Selected Library ID: " . $current_library_id;
+        echo "Ausgewaehlte Library ID: " . $current_library_id;
     } else {
-        echo "No library ID was submitted.";
+        echo "Keine ID gefunden";
     }
 
-    $album_query = "SELECT pk_album_id, album_name FROM tbl_album WHERE fk_id_library = '" . $current_library_id . "';";
-    echo $album_query;
-    $album_result = $connection->query($album_query);
-    echo "hey";
-
-
+    /* 
+    Funktioniert nicht weiter. Die Verbindung zu Datenbank mit dem Ausgewaeltem Benutzer
+    ist nicht mehr vorhanden.
+    */
 
     ?>
 

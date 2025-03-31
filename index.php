@@ -3,11 +3,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-    // Database connection parameters
     $host = 'localhost'; 
     $dbname = 'streamingdb';
 
-    // 
     $connection = new mysqli($host, $username, $password, $dbname);
 
     if ($connection->connect_error) {
@@ -23,9 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/styles.css">
+    <meta charset="UTF-8">    
     <title>Database Login</title>
     <link rel="stylesheet" href="css/styles.css">
 </head>
@@ -42,7 +38,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </form>
 
     <?php
-    // Display error message if connection failed
     if ($errorMessage) {
         echo "<p style='color:red;'>$errorMessage</p>";
     }

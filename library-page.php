@@ -25,6 +25,7 @@ include 'navbar.php';
             echo $library['pk_id_library'] . ". ";
                         
             echo '<form method="post" action="album-page.php">';
+            // versteckter input um die ID und username zu uebergeben            
             echo '<input type="hidden" name="pk_id_library" value="' . $library['pk_id_library'] . '">';
             echo '<button type="submit" name="' . $library['library_name'] . '_btn">' . $library['library_name'] . '</button>';
             echo '</form>';
@@ -39,11 +40,6 @@ include 'navbar.php';
 </html>
 
 <style>
-    body {
-        
-    }
-    
-
     .library-container {
         display: flex;
         flex-direction: column;

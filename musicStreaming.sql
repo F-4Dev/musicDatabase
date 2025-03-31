@@ -76,69 +76,69 @@ CREATE TABLE tbl_song_userdata (
 ) ENGINE = InnoDB;
 
 -- DATA IMPORTS --
-LOAD DATA LOCAL INFILE '/home/f4/Documents/!Schule/DABA/musicDatabase/data/tbl_library.csv' 
+LOAD DATA LOCAL INFILE '/home/f4/Documents/Schule/DABA/musicDatabase/data/tbl_library.csv' 
 INTO TABLE tbl_library 
 FIELDS TERMINATED BY ',' 
 ENCLOSED BY '"' 
 LINES TERMINATED BY '\n' 
 IGNORE 1 LINES;
-LOAD DATA LOCAL INFILE '/home/f4/Documents/!Schule/DABA/musicDatabase/data/tbl_album.csv' 
+LOAD DATA LOCAL INFILE '/home/f4/Documents/Schule/DABA/musicDatabase/data/tbl_album.csv' 
 INTO TABLE tbl_album 
 FIELDS TERMINATED BY ',' 
 ENCLOSED BY '"' 
 LINES TERMINATED BY '\n' 
 IGNORE 1 LINES;
 
-LOAD DATA LOCAL INFILE '/home/f4/Documents/!Schule/DABA/musicDatabase/data/tbl_song.csv' 
+LOAD DATA LOCAL INFILE '/home/f4/Documents/Schule/DABA/musicDatabase/data/tbl_song.csv' 
 INTO TABLE tbl_song 
 FIELDS TERMINATED BY ',' 
 ENCLOSED BY '"' 
 LINES TERMINATED BY '\n' 
 IGNORE 1 LINES;
 
-LOAD DATA LOCAL INFILE '/home/f4/Documents/!Schule/DABA/musicDatabase/data/tbl_artist.csv' 
+LOAD DATA LOCAL INFILE '/home/f4/Documents/Schule/DABA/musicDatabase/data/tbl_artist.csv' 
 INTO TABLE tbl_artist 
 FIELDS TERMINATED BY ',' 
 ENCLOSED BY '"' 
 LINES TERMINATED BY '\n' 
 IGNORE 1 LINES;
 
-LOAD DATA LOCAL INFILE '/home/f4/Documents/!Schule/DABA/musicDatabase/data/tbl_artist_album.csv' 
+LOAD DATA LOCAL INFILE '/home/f4/Documents/Schule/DABA/musicDatabase/data/tbl_artist_album.csv' 
 INTO TABLE tbl_artist_album 
 FIELDS TERMINATED BY ',' 
 ENCLOSED BY '"' 
 LINES TERMINATED BY '\n' 
 IGNORE 1 LINES;
 
-LOAD DATA LOCAL INFILE '/home/f4/Documents/!Schule/DABA/musicDatabase/data/tbl_genre.csv' 
+LOAD DATA LOCAL INFILE '/home/f4/Documents/Schule/DABA/musicDatabase/data/tbl_genre.csv' 
 INTO TABLE tbl_genre 
 FIELDS TERMINATED BY ',' 
 ENCLOSED BY '"' 
 LINES TERMINATED BY '\n' 
 IGNORE 1 LINES;
 
-LOAD DATA LOCAL INFILE '/home/f4/Documents/!Schule/DABA/musicDatabase/data/tbl_album_genre.csv' 
+LOAD DATA LOCAL INFILE '/home/f4/Documents/Schule/DABA/musicDatabase/data/tbl_album_genre.csv' 
 INTO TABLE tbl_album_genre 
 FIELDS TERMINATED BY ',' 
 ENCLOSED BY '"' 
 LINES TERMINATED BY '\n' 
 IGNORE 1 LINES;
 
-LOAD DATA LOCAL INFILE '/home/f4/Documents/!Schule/DABA/musicDatabase/data/tbl_user.csv' 
+LOAD DATA LOCAL INFILE '/home/f4/Documents/Schule/DABA/musicDatabase/data/tbl_user.csv' 
 INTO TABLE tbl_user 
 FIELDS TERMINATED BY ',' 
 ENCLOSED BY '"' 
 LINES TERMINATED BY '\n' 
 IGNORE 1 LINES;
 
-LOAD DATA LOCAL INFILE '/home/f4/Documents/!Schule/DABA/musicDatabase/data/tbl_album_favorite.csv' 
+LOAD DATA LOCAL INFILE '/home/f4/Documents/Schule/DABA/musicDatabase/data/tbl_album_favorite.csv' 
 INTO TABLE tbl_album_favorite 
 FIELDS TERMINATED BY ',' 
 ENCLOSED BY '"' 
 LINES TERMINATED BY '\n' 
 IGNORE 1 LINES;
 
-LOAD DATA LOCAL INFILE '/home/f4/Documents/!Schule/DABA/musicDatabase/data/tbl_song_userdata.csv' 
+LOAD DATA LOCAL INFILE '/home/f4/Documents/Schule/DABA/musicDatabase/data/tbl_song_userdata.csv' 
 INTO TABLE tbl_song_userdata 
 FIELDS TERMINATED BY ',' 
 ENCLOSED BY '"' 
@@ -217,32 +217,4 @@ BEGIN
     END IF;
 END //
 DELIMITER ;
-
-DELIMITER //
-
-CREATE TRIGGER trg_remove_duplicates
-AFTER INSERT 
-ON tbl_song
-FOR EACH ROW 
-BEGIN
-    -- Check if a song with the same name and album ID already exists
-    IF (
-        SELECT COUNT(*)
-        FROM tbl_song
-        WHERE song_name = NEW.song_name
-        AND fk_album_id = NEW.fk_album_id
-    ) > 0 THEN
-        -- Delete the existing song with the same name and album ID
-        DELETE FROM tbl_song 
-        WHERE song_name = NEW.song_name
-        AND fk_album_id = NEW.fk_album_id;
-    END IF;
-END //
-
-DELIMITER ;
-
-
--- teste einfuegen von song mit gleichem namen
-INSERT INTO tbl_song(song_name,pathToSong,dateAdded,fk_album_id)
-VALUES ('Song zehn','/music/song1.mp3','2023-01-05',1);
 
