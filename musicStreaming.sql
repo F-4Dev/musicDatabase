@@ -173,6 +173,31 @@ CREATE VIEW view_show_album_data AS
     INNER JOIN 
         tbl_artist ON tbl_artist_album.fk_artist_id = tbl_artist.pk_artist_id;
 
+DROP VIEW IF EXISTS view_show_favourite_albums;
+CREATE VIEW view_show_favourite_albums AS
+    SELECT
+         tbl_user.pk_username AS user,
+         tbl_album.album_name AS album         
+    FROM
+        tbl_album_favorite
+    INNER JOIN
+        tbl_album ON tbl_album.pk_album_id = tbl_album_favorite.fk_album_id
+    INNER JOIN
+        tbl_user ON tbl_user.pk_username = tbl_album_favorite.fk_username;
+
+DROP VIEW IF EXISTS view_show_favourite_playcount_songs;
+
+CREATE VIEW view_show_favourite_playcount_songs AS
+    SELECT
+         tbl_user.pk_username AS user,
+         tbl_song.song_name AS song
+    FROM
+        tbl_song_userdata
+    INNER JOIN
+        tbl_song ON tbl_song.pk_song_id = tbl_song_userdata.fk_song_id
+    INNER JOIN
+        tbl_user ON tbl_user.pk_username = tbl_song_userdata.fk_username;
+
 -- TRIGGER --
 CREATE TABLE tbl_log_song_duplicates (
     pk_log_id INT NOT NULL AUTO_INCREMENT,
