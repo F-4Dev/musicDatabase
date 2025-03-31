@@ -4,14 +4,14 @@ USE streamingdb;
 
 CREATE TABLE tbl_library (
     pk_id_library INT NOT NULL AUTO_INCREMENT,
-    library_name VARCHAR(255) NOT NULL DEFAULT "unbekannt",
+    library_name VARCHAR(255) NOT NULL DEFAULT "unbekannte Library",
     PRIMARY KEY (pk_id_library),
     pathToLibrary VARCHAR(255)
 ) ENGINE = InnoDB;
 
 CREATE TABLE tbl_album (
     pk_album_id INT NOT NULL AUTO_INCREMENT,
-    album_name VARCHAR(255) NOT NULL DEFAULT "unbekannt",
+    album_name VARCHAR(255) NOT NULL DEFAULT "unbekanntes Album",
     fk_id_library INT NOT NULL,
     PRIMARY KEY (pk_album_id),
     FOREIGN KEY (fk_id_library) REFERENCES tbl_library (pk_id_library) ON DELETE CASCADE
@@ -19,7 +19,7 @@ CREATE TABLE tbl_album (
 
 CREATE TABLE tbl_song (
     pk_song_id INT NOT NULL AUTO_INCREMENT,
-    song_name VARCHAR(255) NOT NULL DEFAULT "unbekannt",
+    song_name VARCHAR(255) NOT NULL DEFAULT "unbekannter Song",
     pathToSong VARCHAR(255),
     dateAdded DATE,
     fk_album_id INT NOT NULL,
